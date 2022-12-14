@@ -1,5 +1,8 @@
 package com.example.demoworking;
 
+import com.example.demoworking.models.Subject;
+import com.example.demoworking.models.Teacher;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,12 +20,33 @@ public class Database {
         statement = db.getConn().createStatement();
     }
 
-    void insertTeacher(String name) throws SQLException {
-        String qry = String.format("INSERT INTO teacher(name) VALUES ('%s')",name);
+    public Teacher insertTeacher(String name) throws SQLException {
+        String qry = String.format("INSERT INTO teacher(t_name) VALUES ('%s')",name);
         statement.executeUpdate(qry);
+        return getMostRecentTeacher();
     }
 
-    static void printSQLExceptionErrors(SQLException e){
+    public Subject insertSubject(String title) throws SQLException {
+        String qry = String.format("INSERT INTO subject(title) VALUES ('%s')",title);
+        statement.executeUpdate(qry);
+        return getMostRecentSubject();
+    }
+
+    private Teacher getMostRecentTeacher() throws SQLException {
+        qry = "SELECT * from teacher where t_id = (SELECT MAX(t_id) from teacher)";
+        resultSet = statement.executeQuery(qry);
+        resultSet.next();
+        return new Teacher(resultSet);
+    }
+
+    private Subject getMostRecentSubject() throws SQLException {
+        qry = "SELECT * from subject where sbjct_id = (SELECT MAX(sbjct_id) from subject)";
+        resultSet = statement.executeQuery(qry);
+        resultSet.next();
+        return new Subject(resultSet);
+    }
+
+    public static void printSQLExceptionErrors(SQLException e){
         System.out.println("SQLException: " + e.getMessage());
         System.out.println("SQLState: " + e.getSQLState());
         System.out.println("VendorError: " + e.getErrorCode());
