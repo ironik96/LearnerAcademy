@@ -23,18 +23,18 @@ CREATE TABLE Student(
     ON UPDATE CASCADE
 );
 CREATE TABLE TeacherClassSubject(
-    t_id int NOT NULL,
     c_id int NOT NULL,
     sbjct_id int NOT NULL,
-    CONSTRAINT pk_tcs PRIMARY KEY (t_id, c_id, sbjct_id),
-    FOREIGN KEY (t_id) REFERENCES Teacher(t_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    t_id int,
+    CONSTRAINT pk_tcs PRIMARY KEY (c_id, sbjct_id),
     FOREIGN KEY (c_id) REFERENCES Class(c_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     FOREIGN KEY (sbjct_id) REFERENCES Subject(sbjct_id)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (t_id) REFERENCES Teacher(t_id)
+    ON DELETE SET NULL
+    ON UPDATE SET NULL
 
 );
