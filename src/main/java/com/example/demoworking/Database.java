@@ -1,5 +1,6 @@
 package com.example.demoworking;
 
+import com.example.demoworking.models.Class;
 import com.example.demoworking.models.Subject;
 import com.example.demoworking.models.Teacher;
 
@@ -26,6 +27,12 @@ public class Database {
         return getMostRecentTeacher();
     }
 
+    public Class insertClass(String name) throws SQLException {
+        String qry = String.format("INSERT INTO class(c_name) VALUES ('%s')",name);
+        statement.executeUpdate(qry);
+        return getMostRecentClass();
+    }
+
     public Subject insertSubject(String title) throws SQLException {
         String qry = String.format("INSERT INTO subject(title) VALUES ('%s')",title);
         statement.executeUpdate(qry);
@@ -37,6 +44,13 @@ public class Database {
         resultSet = statement.executeQuery(qry);
         resultSet.next();
         return new Teacher(resultSet);
+    }
+
+    private Class getMostRecentClass() throws SQLException {
+        qry = "SELECT * from class where c_id = (SELECT MAX(c_id) from class)";
+        resultSet = statement.executeQuery(qry);
+        resultSet.next();
+        return new Class(resultSet);
     }
 
     private Subject getMostRecentSubject() throws SQLException {

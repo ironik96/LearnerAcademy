@@ -36,5 +36,20 @@
     %>
     <input type="submit">
 </form>
+
+<%-- Add Class --%>
+<form action="${pageContext.request.contextPath}/add-class" method="post" id="class">
+    <h1>Add a Class</h1>
+    <label>
+        <input type="text" placeholder="name" name="className"/>
+    </label>
+    <%
+        if(request.getAttribute("classSuccess") != null)
+            out.println("<p class=\"success\">"+request.getAttribute("classSuccess").toString()+"</p>");
+        if(request.getAttribute("classError") != null)
+            out.println("<p class=\"fail\">"+request.getAttribute("classError").toString()+"</p>");
+    %>
+    <input type="submit">
+</form>
 </body>
 </html>
