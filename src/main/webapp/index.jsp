@@ -1,1 +1,1 @@
-<jsp:include page="teacher.jsp"/>
+<jsp:include page="login.jsp"/>
