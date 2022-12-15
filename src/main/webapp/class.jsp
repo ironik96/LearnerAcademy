@@ -5,7 +5,7 @@
 <head>
     <title>Learner Academy</title>
     <link rel="stylesheet" href="style.css">
-    <script src="index.js" defer></script>
+
 </head>
 <body>
 <div class="container">

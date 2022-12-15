@@ -1,7 +1,7 @@
 <%@ page import="com.example.demoworking.Database" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.demoworking.models.Teacher" %>
-<form action="${pageContext.request.contextPath}/add-teacher" method="post" id="teacher">
+<form action="${pageContext.request.contextPath}/add-teacher" method="post" >
     <h1>Teachers</h1>
     <div class="spacer"></div>
     <label class="form-label">

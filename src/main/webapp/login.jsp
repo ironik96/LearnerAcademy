@@ -4,10 +4,10 @@
 <head>
     <title>Learner Academy</title>
     <link rel="stylesheet" href="style.css">
-    <script src="index.js" defer></script>
+
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/login" method="post" id="login">
+<form action="${pageContext.request.contextPath}/login" method="post" >
 
     <label class="form-label">
         <input type="text" class="form-input" placeholder="username" name="username"/>
