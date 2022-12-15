@@ -22,6 +22,21 @@ form {
     align-items: baseline;
 }
 
+form.login{
+    height: 100%;
+    flex-direction: column;
+    flex-basis: 50%;
+    justify-content: center;
+    margin: auto;
+    gap: 60px;
+}
+
+img{
+    flex-basis: 50%;
+    max-width: 500px;
+    margin: auto;
+}
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
