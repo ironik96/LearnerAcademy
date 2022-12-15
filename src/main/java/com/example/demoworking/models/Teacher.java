@@ -24,6 +24,13 @@ public class Teacher {
         this.name = name;
     }
 
+    public String tableRowHtml(){
+        return String.format("<tr><td>%d</td><td>%s</td></tr>",id,name);
+    }
+    public static String tableHeaderHtml(){
+        return String.format("<tr><th>%s</th><th>%s</th></tr>","id","name");
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +

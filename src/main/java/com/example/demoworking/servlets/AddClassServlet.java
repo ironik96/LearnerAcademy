@@ -3,32 +3,21 @@ package com.example.demoworking.servlets;
 import com.example.demoworking.Database;
 import com.example.demoworking.models.Class;
 
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
 
 @WebServlet(name = "AddClassServlet", value = "/add-class")
 public class AddClassServlet extends HttpServlet {
-
-    Database db;
-
-    @Override
-    public void init() throws ServletException {
-        if (this.getServletConfig().getServletContext().getAttribute("database") != null)
-            db = (Database) this.getServletConfig().getServletContext().getAttribute("database");
-        else {
-            try {
-                db = new Database();
-                this.getServletConfig().getServletContext().setAttribute("database", db);
-            } catch (SQLException e) {
-                Database.printSQLExceptionErrors(e);
-            }
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,6 +26,7 @@ public class AddClassServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Database db = (Database) request.getSession().getAttribute("database");
         String className = request.getParameter("className");
         try {
             Class c = db.insertClass(className);
@@ -46,7 +36,7 @@ public class AddClassServlet extends HttpServlet {
             Database.printSQLExceptionErrors(e);
             request.setAttribute("classError", "Failed to insert class");
         }
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("class.jsp").forward(request, response);
     }
 
 

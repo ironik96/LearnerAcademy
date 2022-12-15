@@ -7,6 +7,8 @@ import com.example.demoworking.models.Teacher;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Database {
@@ -22,21 +24,43 @@ public class Database {
     }
 
     public Teacher insertTeacher(String name) throws SQLException {
-        String qry = String.format("INSERT INTO teacher(t_name) VALUES ('%s')",name);
+        qry = String.format("INSERT INTO teacher(t_name) VALUES ('%s')",name);
         statement.executeUpdate(qry);
         return getMostRecentTeacher();
     }
 
     public Class insertClass(String name) throws SQLException {
-        String qry = String.format("INSERT INTO class(c_name) VALUES ('%s')",name);
+        qry = String.format("INSERT INTO class(c_name) VALUES ('%s')",name);
         statement.executeUpdate(qry);
         return getMostRecentClass();
     }
 
     public Subject insertSubject(String title) throws SQLException {
-        String qry = String.format("INSERT INTO subject(title) VALUES ('%s')",title);
+        qry = String.format("INSERT INTO subject(title) VALUES ('%s')",title);
         statement.executeUpdate(qry);
         return getMostRecentSubject();
+    }
+
+    public List<Teacher> readTeachers() throws SQLException {
+        resultSet = statement.executeQuery("select * from teacher");
+        List<Teacher> teachers = new ArrayList<>();
+        while (resultSet.next())
+            teachers.add(new Teacher(resultSet));
+        return teachers;
+    }
+    public List<Class> readClasses() throws SQLException {
+        resultSet = statement.executeQuery("select * from class");
+        List<Class> classes = new ArrayList<>();
+        while (resultSet.next())
+            classes.add(new Class(resultSet));
+        return classes;
+    }
+    public List<Subject> readSubjects() throws SQLException {
+        resultSet = statement.executeQuery("select * from subject");
+        List<Subject> subjects = new ArrayList<>();
+        while (resultSet.next())
+            subjects.add(new Subject(resultSet));
+        return subjects;
     }
 
     private Teacher getMostRecentTeacher() throws SQLException {
@@ -64,6 +88,7 @@ public class Database {
         System.out.println("SQLException: " + e.getMessage());
         System.out.println("SQLState: " + e.getSQLState());
         System.out.println("VendorError: " + e.getErrorCode());
+        e.printStackTrace();
     }
 
 }

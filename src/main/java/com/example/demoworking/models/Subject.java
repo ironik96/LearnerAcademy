@@ -28,6 +28,13 @@ public class Subject {
         this.title = title;
     }
 
+    public String tableRowHtml(){
+        return String.format("<tr><td>%d</td><td>%s</td></tr>",id,title);
+    }
+    public static String tableHeaderHtml(){
+        return String.format("<tr><th>%s</th><th>%s</th></tr>","id","title");
+    }
+
     @Override
     public String toString() {
         return "Subject{" +
