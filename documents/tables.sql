@@ -36,5 +36,4 @@ CREATE TABLE TeacherClassSubject(
     FOREIGN KEY (t_id) REFERENCES Teacher(t_id)
     ON DELETE SET NULL
     ON UPDATE SET NULL
-
 );

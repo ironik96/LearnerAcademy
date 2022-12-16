@@ -6,7 +6,6 @@
         position: relative;
         display: block;
         width: 100%;
-        margin: 0 auto;
         font-family: "Open Sans", "Helvetica Neue", "Segoe UI", "Calibri",
         "Arial", sans-serif;
         font-size: 18px;

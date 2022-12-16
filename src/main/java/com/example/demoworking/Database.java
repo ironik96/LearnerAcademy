@@ -1,9 +1,7 @@
 package com.example.demoworking;
 
+import com.example.demoworking.models.*;
 import com.example.demoworking.models.Class;
-import com.example.demoworking.models.Student;
-import com.example.demoworking.models.Subject;
-import com.example.demoworking.models.Teacher;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,25 +23,25 @@ public class Database {
     }
 
     public Teacher insertTeacher(String name) throws SQLException {
-        qry = String.format("INSERT INTO teacher(t_name) VALUES ('%s')",name);
+        qry = String.format("INSERT INTO teacher(t_name) VALUES ('%s')", name);
         statement.executeUpdate(qry);
         return getMostRecentTeacher();
     }
 
     public Class insertClass(String name) throws SQLException {
-        qry = String.format("INSERT INTO class(c_name) VALUES ('%s')",name);
+        qry = String.format("INSERT INTO class(c_name) VALUES ('%s')", name);
         statement.executeUpdate(qry);
         return getMostRecentClass();
     }
 
     public Subject insertSubject(String title) throws SQLException {
-        qry = String.format("INSERT INTO subject(title) VALUES ('%s')",title);
+        qry = String.format("INSERT INTO subject(title) VALUES ('%s')", title);
         statement.executeUpdate(qry);
         return getMostRecentSubject();
     }
 
     public Student insertStudent(String name, String classId) throws SQLException {
-        qry = String.format("INSERT INTO student(stdnt_name, c_id) VALUES ('%s', %s)",name,classId);
+        qry = String.format("INSERT INTO student(stdnt_name, c_id) VALUES ('%s', %s)", name, classId);
         statement.executeUpdate(qry);
         return getMostRecentStudent();
     }
@@ -55,6 +53,7 @@ public class Database {
             teachers.add(new Teacher(resultSet));
         return teachers;
     }
+
     public List<Class> readClasses() throws SQLException {
         resultSet = statement.executeQuery("select * from class");
         List<Class> classes = new ArrayList<>();
@@ -62,6 +61,7 @@ public class Database {
             classes.add(new Class(resultSet));
         return classes;
     }
+
     public List<Subject> readSubjects() throws SQLException {
         resultSet = statement.executeQuery("select * from subject");
         List<Subject> subjects = new ArrayList<>();
@@ -76,6 +76,38 @@ public class Database {
         while (resultSet.next())
             students.add(new Student(resultSet));
         return students;
+    }
+
+    public ClassReport classReport(int selectedClass) throws SQLException {
+        boolean hasSubjects = getClassWithSubjects(selectedClass) != null;
+//        if (hasSubjects)
+        return new ClassReport(classById(selectedClass), classSubjects(selectedClass), classStudents(selectedClass));
+//        return new ClassReport(classById(selectedClass),null, classStudents(selectedClass));
+    }
+
+    public Class classById(int classId) throws SQLException {
+        qry = "SELECT * from class where c_id = " + classId;
+        resultSet = statement.executeQuery(qry);
+        resultSet.next();
+        return new Class(resultSet);
+    }
+
+    public List<Student> classStudents(int classId) throws SQLException {
+        qry = String.format("select s.*, c.c_name from student s JOIN class c ON s.c_id = c.c_id where s.c_id = %d", classId);
+        resultSet = statement.executeQuery(qry);
+        List<Student> students = new ArrayList<>();
+        while (resultSet.next())
+            students.add(new Student(resultSet));
+        return students;
+    }
+
+    public List<ClassSubject> classSubjects(int classId) throws SQLException {
+        qry = String.format("SELECT c.*, t.*, s.* FROM teacherclasssubject tcs JOIN class c on tcs.c_id = c.c_id JOIN teacher t on tcs.t_id = t.t_id JOIN SUBJECT s on tcs.sbjct_id = s.sbjct_id WHERE tcs.c_id = %d", classId);
+        resultSet = statement.executeQuery(qry);
+        List<ClassSubject> classSubject = new ArrayList<>();
+        while (resultSet.next())
+            classSubject.add(new ClassSubject(resultSet));
+        return classSubject;
     }
 
     private Teacher getMostRecentTeacher() throws SQLException {
@@ -106,11 +138,17 @@ public class Database {
         return new Subject(resultSet);
     }
 
-    public static void printSQLExceptionErrors(SQLException e){
+    public ClassSubject getClassWithSubjects(int classId) throws SQLException {
+        qry = String.format("SELECT c.*, t.*, s.* FROM teacherclasssubject tcs JOIN class c on tcs.c_id = c.c_id JOIN teacher t on tcs.t_id = t.t_id JOIN SUBJECT s on tcs.sbjct_id = s.sbjct_id WHERE tcs.c_id = %d", classId);
+        resultSet = statement.executeQuery(qry);
+        if (!resultSet.next()) return null;
+        return new ClassSubject(resultSet);
+    }
+
+    public static void printSQLExceptionErrors(SQLException e) {
         System.out.println("SQLException: " + e.getMessage());
         System.out.println("SQLState: " + e.getSQLState());
         System.out.println("VendorError: " + e.getErrorCode());
         e.printStackTrace();
     }
-
 }

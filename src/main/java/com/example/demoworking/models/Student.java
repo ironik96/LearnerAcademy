@@ -42,6 +42,14 @@ public class Student {
         return String.format("<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>", "id", "name", "class id", "class name");
     }
 
+    public String tableRowHtmlForClassReport() {
+        return String.format("<tr><td>%s</td></tr>", name);
+    }
+
+    public static String tableHeaderHtmlForClassReport() {
+        return String.format("<tr><th>%s</th></tr>", "Student");
+    }
+
     @Override
     public String toString() {
         return "Student{" +

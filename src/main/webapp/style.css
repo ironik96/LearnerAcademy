@@ -81,6 +81,11 @@ tr:nth-child(even) {
     padding: 20px 80px;
 }
 
+.report-content {
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .spacer{
     flex-grow: 1;
 }
