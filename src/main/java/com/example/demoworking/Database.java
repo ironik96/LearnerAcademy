@@ -1,6 +1,7 @@
 package com.example.demoworking;
 
 import com.example.demoworking.models.Class;
+import com.example.demoworking.models.Student;
 import com.example.demoworking.models.Subject;
 import com.example.demoworking.models.Teacher;
 
@@ -41,6 +42,12 @@ public class Database {
         return getMostRecentSubject();
     }
 
+    public Student insertStudent(String name, String classId) throws SQLException {
+        qry = String.format("INSERT INTO student(stdnt_name, c_id) VALUES ('%s', %s)",name,classId);
+        statement.executeUpdate(qry);
+        return getMostRecentStudent();
+    }
+
     public List<Teacher> readTeachers() throws SQLException {
         resultSet = statement.executeQuery("select * from teacher");
         List<Teacher> teachers = new ArrayList<>();
@@ -63,6 +70,14 @@ public class Database {
         return subjects;
     }
 
+    public List<Student> readStudents() throws SQLException {
+        resultSet = statement.executeQuery("select s.*, c.c_name from student s JOIN class c ON s.c_id = c.c_id");
+        List<Student> students = new ArrayList<>();
+        while (resultSet.next())
+            students.add(new Student(resultSet));
+        return students;
+    }
+
     private Teacher getMostRecentTeacher() throws SQLException {
         qry = "SELECT * from teacher where t_id = (SELECT MAX(t_id) from teacher)";
         resultSet = statement.executeQuery(qry);
@@ -75,6 +90,13 @@ public class Database {
         resultSet = statement.executeQuery(qry);
         resultSet.next();
         return new Class(resultSet);
+    }
+
+    private Student getMostRecentStudent() throws SQLException {
+        qry = "select s.*, c.c_name from student s JOIN class c ON s.c_id = c.c_id where s.stdnt_id = (SELECT MAX(stdnt_id) from student)";
+        resultSet = statement.executeQuery(qry);
+        resultSet.next();
+        return new Student(resultSet);
     }
 
     private Subject getMostRecentSubject() throws SQLException {

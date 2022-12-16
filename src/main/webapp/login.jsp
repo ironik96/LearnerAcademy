@@ -21,7 +21,7 @@
             %>
         </label>
         <label class="form-label">
-            <input type="text" class="form-input" placeholder="password" name="password"/>
+            <input type="password" class="form-input" placeholder="password" name="password"/>
             <%
                 if (request.getAttribute("loginPasswordSuccess") != null)
                     out.println("<p class=\"success\">" + request.getAttribute("loginPasswordSuccess").toString() + "</p>");
