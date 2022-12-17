@@ -1,6 +1,5 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.demoworking.Database" %>
-<%@ page import="com.example.demoworking.models.Class" %>
 <%@ page import="com.example.demoworking.models.Student" %>
 <form action="${pageContext.request.contextPath}/add-student" method="post">
     <h1>Students</h1>

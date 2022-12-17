@@ -83,7 +83,7 @@ tr:nth-child(even) {
 
 .report-content {
     justify-content: flex-start;
-    align-items: center;
+    align-items: stretch;
 }
 
 .spacer{
@@ -126,6 +126,11 @@ tr:nth-child(even) {
 .btn{
     width: 200px;
     height: 30px;
+}
+
+.report-btn{
+    width: 100px;
+    height: 15px;
 }
 
 .btn:disabled, .button-menu:disabled {

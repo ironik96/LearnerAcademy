@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Teacher {
-    private int id;
+    private final int id;
     private String name;
 
     public Teacher(ResultSet set) throws SQLException {
@@ -29,6 +29,14 @@ public class Teacher {
     }
     public static String tableHeaderHtml(){
         return String.format("<tr><th>%s</th><th>%s</th></tr>","id","name");
+    }
+
+    public String dropDownInput() {
+        return String.format("<input class=\"select-box-teacher__input\" type=\"radio\" id=\"%s\" value=\"%d\" name=\"selectedTeacher\" checked=\"checked\"/>%n<p class=\"select-box-teacher__input-text\">%s</p>", "teacher"+id, id, name);
+    }
+
+    public String dropDownTitle() {
+        return String.format("<li> <label class=\"select-box-teacher__option\" for=\"%s\" aria-hidden=\"aria-hidden\">%s</label></li>", "teacher"+id, name);
     }
 
     @Override

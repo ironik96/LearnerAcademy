@@ -35,6 +35,14 @@ public class Subject {
         return String.format("<tr><th>%s</th><th>%s</th></tr>","id","title");
     }
 
+    public String dropDownInput() {
+        return String.format("<input class=\"select-box-subject__input\" type=\"radio\" id=\"%s\" value=\"%d\" name=\"selectedSubject\" checked=\"checked\"/>%n<p class=\"select-box-subject__input-text\">%s</p>", "subject"+id, id, title);
+    }
+
+    public String dropDownTitle() {
+        return String.format("<li> <label class=\"select-box-subject__option\" for=\"%s\" aria-hidden=\"aria-hidden\">%s</label></li>", "subject"+id, title);
+    }
+
     @Override
     public String toString() {
         return "Subject{" +

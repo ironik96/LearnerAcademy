@@ -46,6 +46,16 @@ public class Database {
         return getMostRecentStudent();
     }
 
+    public void insertClassSubject(String classId, String subjectId, String teacherId) {
+        qry = String.format("INSERT INTO teacherclasssubject(c_id, sbjct_id, t_id) VALUES (%s,%s,%s)", classId, subjectId, teacherId);
+        try {
+            statement.executeUpdate(qry);
+        } catch (SQLException e) {
+            printSQLExceptionErrors(e);
+        }
+
+    }
+
     public List<Teacher> readTeachers() throws SQLException {
         resultSet = statement.executeQuery("select * from teacher");
         List<Teacher> teachers = new ArrayList<>();
@@ -79,10 +89,7 @@ public class Database {
     }
 
     public ClassReport classReport(int selectedClass) throws SQLException {
-        boolean hasSubjects = getClassWithSubjects(selectedClass) != null;
-//        if (hasSubjects)
         return new ClassReport(classById(selectedClass), classSubjects(selectedClass), classStudents(selectedClass));
-//        return new ClassReport(classById(selectedClass),null, classStudents(selectedClass));
     }
 
     public Class classById(int classId) throws SQLException {
@@ -136,13 +143,6 @@ public class Database {
         resultSet = statement.executeQuery(qry);
         resultSet.next();
         return new Subject(resultSet);
-    }
-
-    public ClassSubject getClassWithSubjects(int classId) throws SQLException {
-        qry = String.format("SELECT c.*, t.*, s.* FROM teacherclasssubject tcs JOIN class c on tcs.c_id = c.c_id JOIN teacher t on tcs.t_id = t.t_id JOIN SUBJECT s on tcs.sbjct_id = s.sbjct_id WHERE tcs.c_id = %d", classId);
-        resultSet = statement.executeQuery(qry);
-        if (!resultSet.next()) return null;
-        return new ClassSubject(resultSet);
     }
 
     public static void printSQLExceptionErrors(SQLException e) {
